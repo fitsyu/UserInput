@@ -6,27 +6,34 @@
 //  Copyright © 2019 Fitsyu . All rights reserved.
 //
 
-import UIKit
+// API
+// ================
+// POST /coffee.shop/welcome?isItNecessary=<Bool>&cName=<String>&count=<Int>
+// key isItNecessary
+//  type = Bool
+//  desc = determines whether a customer wants a coffee or not
 
+// key cName
+//  type = String
+//  desc = customer name so we can write it on the coffee cup
 
-// POST /coffee.shop/welcome?isItNecessary=<Bool>
-// key = isItNecessary
-// type = bool
+// key count
+//  type = Int
+//  desc = the number of cups to make
 
-// Design requirement
+// User AppDesign requirement
+// ================
 // Display it as Do you like a coffee?
+// What is your name?
+// How many cups do you want?
 
-
-
-
-
-
-
+import UIKit
 
 class ViewController: UIViewController, Presentation {
     
-    // Conforming to protocol
-    var model: Question<Bool>!
+    func ask(about: String) {
+        self.qLabel.text = about
+    }
     
     func readAnswer() -> Bool {
         return qSwitch.isOn
@@ -50,9 +57,6 @@ class ViewController: UIViewController, Presentation {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        // comlete the design requirement
-        qLabel.text = model.displayName
         
         // system reaction setup
         qSwitch.addTarget(self, action: #selector(notify), for: .valueChanged)

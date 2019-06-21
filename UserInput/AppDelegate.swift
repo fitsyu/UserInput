@@ -8,85 +8,57 @@
 
 import UIKit
 
-// Launcher
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
-
-    var window: UIWindow?
-
-
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
-        // model
-        let question = Question<Bool>()
-        
-        // presentation
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vx01       = storyboard.instantiateInitialViewController() as! ViewController
-        
-        
-        // before we play
-        window?.rootViewController = vx01
-        
-        
-        // let's play
-        Coordinater.shared.model = question
-        Coordinater.shared.presenter = vx01 as Presentation
-        Coordinater.shared.start()
-        
-        return true
-    }
-}
-
-// Model
-public class Question<T> {
+// Model Out
+public class Question {
     
     var keyName: String     = "isItNecessary"
-    var displayName: String = "Do you like a coffe?"
-    var type: T.Type = T.self
+    var displayName: String = "Do you like a coffee?"
+//    var type: T.Type = T.self
 }
+
+// Model Out
+public class Answer {
+    
+    var value: Bool? = false // optional with default
+}
+
 
 // View Blueprint
 public protocol Presentation {
     
-    var model: Question<Bool>! { get set }
+    func ask(about: String)
     
     func readAnswer() -> Bool
     
     func updateAnswer(with: String)
 }
 
-public class Answer {
-    
-    var question: Question<Bool>?
-    var value: Bool?
-}
+
 
 // The gatherer
 class Coordinater {
     
-    var model: Question<Bool>!
+    var input: Question!
     var presenter: Presentation!
-    
-    var answer: Answer = Answer()
+    var output: Answer = Answer()
     
     func start() {
         
-        presenter.model = model
+        presenter.ask(about: input.displayName)
     }
     
-    func doneInput() {
+    public func doneInput() {
         
         let inputRaw = presenter.readAnswer()
         // save
-        self.answer.value = inputRaw
+        self.output.value = inputRaw
         
         let formattedAnswer = inputRaw ? "Yes" : "Nope"
         presenter.updateAnswer(with: formattedAnswer)
     }
     
     public func dumpInput() {
-        print(model.keyName, answer.value)
+        print(input.keyName, output.value ?? "")
     }
     
     // Instance
@@ -98,5 +70,38 @@ class Coordinater {
         }
         
         return Coordinater._instance!
+    }
+}
+
+// Launcher
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+    
+    var window: UIWindow?
+    
+    
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        // model
+        let question = Question()
+        
+        // presentation
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vx01       = storyboard.instantiateInitialViewController() as! ViewController
+        
+        
+        // before we play
+        window?.rootViewController = vx01
+        window?.makeKeyAndVisible()
+        
+        
+        // give me everything I need
+        Coordinater.shared.input     = question
+        Coordinater.shared.presenter = vx01 as Presentation
+        
+        // and I can start my work
+        Coordinater.shared.start()
+        
+        return true
     }
 }
