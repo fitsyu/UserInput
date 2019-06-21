@@ -8,7 +8,8 @@
 
 import UIKit
 
-// Model Out
+// Model In
+// Matching API key with Design Requirement
 public class Question {
     
     var keyName: String     = "isItNecessary"
@@ -16,7 +17,10 @@ public class Question {
 //    var type: T.Type = T.self
 }
 
+
 // Model Out
+// A Template to fill in the blanks where we can also
+// specify default answer in case it is not provided by user
 public class Answer {
     
     var value: Bool? = false // optional with default
@@ -38,9 +42,11 @@ public protocol Presentation {
 // The gatherer
 class Coordinater {
     
-    var input: Question!
-    var presenter: Presentation!
-    var output: Answer = Answer()
+    public var input: Question!
+    public var presenter: Presentation!
+    public var output: Answer = Answer()
+    
+    private var employee: CoordinaterEmployee = Worker()
     
     func start() {
         
@@ -53,7 +59,7 @@ class Coordinater {
         // save
         self.output.value = inputRaw
         
-        let formattedAnswer = inputRaw ? "Yes" : "Nope"
+        let formattedAnswer = employee.process(input: self.output.value!)
         presenter.updateAnswer(with: formattedAnswer)
     }
     
@@ -70,6 +76,20 @@ class Coordinater {
         }
         
         return Coordinater._instance!
+    }
+}
+
+protocol CoordinaterEmployee {
+    
+    func process(input: Bool) -> String
+}
+
+class Worker: CoordinaterEmployee {
+    
+    public func process(input: Bool) -> String {
+        
+        let output = input == true ? "Yes" : "Noooo!"
+        return output
     }
 }
 
