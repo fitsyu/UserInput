@@ -34,4 +34,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
+ 
+    // simulate external trigger
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        print("ADEB")
+        Coordinater.shared.doneInput()
+    }
+    
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        print("AWEF")
+        Coordinater.shared.dumpOutput()
+    }
+    
 }

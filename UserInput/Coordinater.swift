@@ -53,7 +53,7 @@ class Coordinater {
         presenter.updateAnswer(with: formattedAnswer)
     }
     
-    public func dumpInput() {
+    public func dumpOutput() {
         print(input.keyName, output.value ?? "")
     }
     

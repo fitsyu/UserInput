@@ -53,26 +53,5 @@ class ViewController: UIViewController, Presentation {
     
     @IBOutlet weak var submitButton: UIButton!
     
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        
-        // system reaction setup
-        qSwitch.addTarget(self, action: #selector(notify), for: .valueChanged)
-        
-        
-        submitButton.addTarget(self, action: #selector(shout), for: .touchUpInside)
-    }
-
-    
-    @objc func notify() {
-        Coordinater.shared.doneInput()
-    }
-
-    
-    @objc func shout() {
-        Coordinater.shared.dumpInput()
-    }
 }
 
