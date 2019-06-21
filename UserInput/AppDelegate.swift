@@ -17,6 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let vx01       = storyboard.instantiateInitialViewController() as! ViewController
         
         let fillInBlank = Answer()
+        fillInBlank.question = question
         
         
         // before we play

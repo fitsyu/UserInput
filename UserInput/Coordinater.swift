@@ -1,34 +1,3 @@
-// Model In
-// Matching API key with Design Requirement
-public class Question {
-    
-    var keyName: String     = "isItNecessary"
-    var displayName: String = "Do you like a coffee?"
-    //    var type: T.Type = T.self
-}
-
-
-// Model Out
-// A Template to fill in the blanks where we can also
-// specify default answer in case it is not provided by user
-public class Answer {
-    
-    var value: Bool? = false // optional with default
-}
-
-
-// View Blueprint
-public protocol Presentation {
-    
-    func ask(about: String)
-    
-    func readAnswer() -> Bool
-    
-    func updateAnswer(with: String)
-}
-
-
-
 // The gatherer
 class Coordinater {
     
@@ -54,7 +23,7 @@ class Coordinater {
     }
     
     public func dumpOutput() {
-        print(input.keyName, output.value ?? "")
+        dump(output)
     }
     
     // Instance
@@ -66,19 +35,5 @@ class Coordinater {
         }
         
         return Coordinater._instance!
-    }
-}
-
-protocol CoordinaterEmployee {
-    
-    func process(input: Bool) -> String
-}
-
-class Worker: CoordinaterEmployee {
-    
-    public func process(input: Bool) -> String {
-        
-        let output = input == true ? "Yes" : "Noooo!"
-        return output
     }
 }
